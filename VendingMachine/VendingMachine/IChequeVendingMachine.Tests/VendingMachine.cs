@@ -16,7 +16,6 @@ namespace IChequeVendingMachine.Tests
             money = moneyValue;
         }
 
-//        public bool Reject
         public Money Reject()
         {
             
@@ -27,7 +26,16 @@ namespace IChequeVendingMachine.Tests
         {
             selectedProduct = new Product();
 
-            selectedProduct.Price = 1.5M;
+            switch (productCode)
+            {
+                case "A2":
+                    selectedProduct.Price = 1.5M;
+                    break;
+                case "A4":
+                    selectedProduct.Price = 1.73M;
+                    break;
+            }
+            
             return selectedProduct;
         }
 
@@ -46,6 +54,7 @@ namespace IChequeVendingMachine.Tests
         twentyPence = 20,
         fiftyPence = 50,
         onePound = 100,
-        twoPound = 200
+        twoPound = 200,
+        fivePound = 500
     }
 }

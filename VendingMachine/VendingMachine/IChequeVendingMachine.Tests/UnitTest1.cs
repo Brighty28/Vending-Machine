@@ -46,6 +46,7 @@ namespace IChequeVendingMachine.Tests
             Product product = vendingMachine.SelectProduct("A2");
             product.Should().NotBeNull();
         }
+
         [Test]
         public void Successful_Transaction_With_Price()
         {
@@ -61,6 +62,23 @@ namespace IChequeVendingMachine.Tests
             Decimal amount = vendingMachine.ChangeAmount();
 
             amount.Should().Be(50);
+        }
+
+        [Test]
+        public void Successful_Transaction_Higher_Price()
+        {
+            var vendingMachine = new VendingMachine();
+
+            var insertedMoney = Money.fivePound;
+
+            vendingMachine.Insert(insertedMoney);
+
+            Product product = vendingMachine.SelectProduct("A4");
+            product.Should().NotBeNull();
+            product.Price.Should().Be(1.73M);
+            Decimal amount = vendingMachine.ChangeAmount();
+
+            amount.Should().Be(325);
         }
     }
 }
