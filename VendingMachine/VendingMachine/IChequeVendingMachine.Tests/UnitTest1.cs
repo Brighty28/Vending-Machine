@@ -80,5 +80,25 @@ namespace IChequeVendingMachine.Tests
 
             amount.Should().Be(325);
         }
+
+        [Test]
+        public void Successful_First_Selection_Outofstock()
+        {
+            var vendingMachine = new VendingMachine();
+
+            var insertedMoney = Money.onePound;
+
+            vendingMachine.Insert(insertedMoney);
+
+            Product product = vendingMachine.SelectProduct("B7");
+            product.Should().NotBeNull();
+            //int stock = vendingMachine.StockAmount();
+            product.Stock.Should().NotBe(0);
+            product.ErrorMsg.Should().BeNullOrEmpty();
+            product.Price.Should().Be(1.75M);
+            Decimal amount = vendingMachine.ChangeAmount();
+
+            amount.Should().Be(0);
+        }
     }
 }

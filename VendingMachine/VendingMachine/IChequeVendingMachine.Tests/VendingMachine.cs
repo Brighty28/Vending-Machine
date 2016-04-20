@@ -34,9 +34,22 @@ namespace IChequeVendingMachine.Tests
                 case "A4":
                     selectedProduct.Price = 1.73M;
                     break;
+                case "B7":
+                    selectedProduct.Price = 1.75M;
+                    selectedProduct.Stock = 0;
+                    selectedProduct.ErrorMsg = "No product avaiable at" + '-' + productCode;
+                    break;
+                case "B6":
+                    selectedProduct.Price = 1.75M;
+                    break;
             }
             
             return selectedProduct;
+        }
+
+        public int StockAmount()
+        {
+            return 1;
         }
 
         public decimal ChangeAmount()
