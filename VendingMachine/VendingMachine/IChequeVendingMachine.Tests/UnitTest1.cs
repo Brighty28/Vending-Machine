@@ -14,7 +14,7 @@ namespace IChequeVendingMachine.Tests
         #endregion
 
         [Test]
-        public void Should_pass_first_test()
+        public void Should_Pass_First_Test()
         {
             var vendingMachine = new VendingMachine();
             vendingMachine.Insert(Money.penny);
@@ -69,16 +69,18 @@ namespace IChequeVendingMachine.Tests
         {
             var vendingMachine = new VendingMachine();
 
-            var insertedMoney = Money.fivePound;
+            var pounds = (int)Money.onePound * 5;
+            var insertedMoney = (Money)pounds;
 
             vendingMachine.Insert(insertedMoney);
+            //vendingMachine.Coins(poinds, 5);
 
             Product product = vendingMachine.SelectProduct("A4");
             product.Should().NotBeNull();
             product.Price.Should().Be(1.73M);
             Decimal amount = vendingMachine.ChangeAmount();
 
-            amount.Should().Be(325);
+            amount.Should().Be(327);
         }
 
         [Test]
@@ -86,16 +88,24 @@ namespace IChequeVendingMachine.Tests
         {
             var vendingMachine = new VendingMachine();
 
-            var insertedMoney = Money.onePound;
+            const Money pound = Money.onePound;
+
+            const int pence = (int) Money.fivePence + (int) Money.twentyPence + (int)Money.fiftyPence;
+
+            var insertedMoney = pound + pence;
 
             vendingMachine.Insert(insertedMoney);
+            
+            Product product1 = vendingMachine.SelectProduct("B7");
+            product1.Should().NotBeNull();
+            //int stock = product.Stock;
+            product1.Stock.Should().Equals(0);
+            //string error = product.ErrorMsg;
+            //product1.ErrorMsg.Should().NotBeEmpty();
 
-            Product product = vendingMachine.SelectProduct("B7");
-            product.Should().NotBeNull();
-            //int stock = vendingMachine.StockAmount();
-            product.Stock.Should().NotBe(0);
-            product.ErrorMsg.Should().BeNullOrEmpty();
-            product.Price.Should().Be(1.75M);
+            Product product2 = vendingMachine.SelectProduct("B6");
+
+            product2.Price.Should().Be(1.75M);
             Decimal amount = vendingMachine.ChangeAmount();
 
             amount.Should().Be(0);

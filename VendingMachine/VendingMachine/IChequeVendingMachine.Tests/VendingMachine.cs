@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -8,43 +9,49 @@ namespace IChequeVendingMachine.Tests
 {
     class VendingMachine
     {
-        private Money money;
-        private Product selectedProduct;
+        private Money _money;
+        private Product _selectedProduct;
+        private Change _availableChange;
 
         public void Insert(Money moneyValue)
         {
-            money = moneyValue;
+            _money = moneyValue;
         }
 
         public Money Reject()
         {
             
-            return money;
+            return _money;
         }
 
         internal Product SelectProduct(string productCode)
         {
-            selectedProduct = new Product();
+            _selectedProduct = new Product();
 
-            switch (productCode)
+            var available = true;
+            while (available)
             {
-                case "A2":
-                    selectedProduct.Price = 1.5M;
-                    break;
-                case "A4":
-                    selectedProduct.Price = 1.73M;
-                    break;
-                case "B7":
-                    selectedProduct.Price = 1.75M;
-                    selectedProduct.Stock = 0;
-                    selectedProduct.ErrorMsg = "No product avaiable at" + '-' + productCode;
-                    break;
-                case "B6":
-                    selectedProduct.Price = 1.75M;
-                    break;
+                switch (productCode)
+                {
+                    case "A2":
+                        _selectedProduct.Price = 1.5M;
+                        break;
+                    case "A4":
+                        _selectedProduct.Price = 1.73M;
+                        break;
+                    case "B7":
+                        _selectedProduct.Price = 1.75M;
+                        _selectedProduct.Stock = 0;
+                        available = false;
+                        _selectedProduct.ErrorMsg = "No product avaiable at" + '-' + productCode;
+                        break;
+                    case "B6":
+                        _selectedProduct.Price = 1.75M;
+                        break;
+                }
             }
             
-            return selectedProduct;
+            return _selectedProduct;
         }
 
         public int StockAmount()
@@ -54,7 +61,7 @@ namespace IChequeVendingMachine.Tests
 
         public decimal ChangeAmount()
         {
-            return Convert.ToDecimal((int)money) - (100*selectedProduct.Price);
+            return Convert.ToDecimal((int)_money) - (100*_selectedProduct.Price);
         }
     }
 
@@ -67,7 +74,7 @@ namespace IChequeVendingMachine.Tests
         twentyPence = 20,
         fiftyPence = 50,
         onePound = 100,
-        twoPound = 200,
-        fivePound = 500
+        twoPound = 200
+        //fivePound = 500
     }
 }
