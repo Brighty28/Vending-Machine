@@ -36,17 +36,23 @@ namespace IChequeVendingMachine.Tests
                     case "A2":
                         _selectedProduct.Price = 1.5M;
                         break;
+                    case "A3":
+                        _selectedProduct.Price = 1.72M;
+                        break;
                     case "A4":
                         _selectedProduct.Price = 1.73M;
+                        break;
+                    case "B5":
+                        _selectedProduct.Price = 0.59M;
+                        break;
+                    case "B6":
+                        _selectedProduct.Price = 1.75M;
                         break;
                     case "B7":
                         _selectedProduct.Price = 1.75M;
                         _selectedProduct.Stock = 0;
                         available = false;
                         _selectedProduct.ErrorMsg = "No product avaiable at" + '-' + productCode;
-                        break;
-                    case "B6":
-                        _selectedProduct.Price = 1.75M;
                         break;
                 }
             }
@@ -61,6 +67,8 @@ namespace IChequeVendingMachine.Tests
 
         public decimal ChangeAmount()
         {
+            var availableChange = new Change();
+            
             return Convert.ToDecimal((int)_money) - (100*_selectedProduct.Price);
         }
     }

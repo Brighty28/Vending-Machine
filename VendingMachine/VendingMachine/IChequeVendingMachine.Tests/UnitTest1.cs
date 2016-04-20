@@ -90,7 +90,7 @@ namespace IChequeVendingMachine.Tests
 
             const Money pound = Money.onePound;
 
-            const int pence = (int) Money.fivePence + (int) Money.twentyPence + (int)Money.fiftyPence;
+            int pence = Convert.ToInt32("0.75M");//(int) Money.fivePence + (int) Money.twentyPence + (int)Money.fiftyPence;
 
             var insertedMoney = pound + pence;
 
@@ -109,6 +109,19 @@ namespace IChequeVendingMachine.Tests
             Decimal amount = vendingMachine.ChangeAmount();
 
             amount.Should().Be(0);
+        }
+
+        [Test]
+        public void Successful_Change_Available()
+        {
+            var vendingMachine = new VendingMachine();
+
+            var insertedMoney = (int)Money.twoPound * 2;
+
+            vendingMachine.Insert((Money)insertedMoney);
+
+            vendingMachine.ChangeAmount();
+
         }
     }
 }
