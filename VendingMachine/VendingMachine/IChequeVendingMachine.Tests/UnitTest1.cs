@@ -90,7 +90,7 @@ namespace IChequeVendingMachine.Tests
 
             const Money pound = Money.onePound;
 
-            int pence = Convert.ToInt32("0.75M");//(int) Money.fivePence + (int) Money.twentyPence + (int)Money.fiftyPence;
+            const int pence = (int) Money.fivePence + (int) Money.twentyPence + (int)Money.fiftyPence;
 
             var insertedMoney = pound + pence;
 
@@ -98,10 +98,10 @@ namespace IChequeVendingMachine.Tests
             
             Product product1 = vendingMachine.SelectProduct("B7");
             product1.Should().NotBeNull();
-            //int stock = product.Stock;
-            product1.Stock.Should().Equals(0);
-            //string error = product.ErrorMsg;
-            //product1.ErrorMsg.Should().NotBeEmpty();
+            
+            product1.Stock.Should().Be(0);
+            string error = product1.ErrorMsg;
+            System.Diagnostics.Trace.WriteLine(error);
 
             Product product2 = vendingMachine.SelectProduct("B6");
 
@@ -112,15 +112,22 @@ namespace IChequeVendingMachine.Tests
         }
 
         [Test]
-        public void Successful_Change_Available()
+        public void Successful_Selection_DeductChange()
         {
             var vendingMachine = new VendingMachine();
 
-            var insertedMoney = (int)Money.twoPound * 2;
+            var insertedMoney = (int) Money.twoPound * 2;
 
             vendingMachine.Insert((Money)insertedMoney);
 
-            vendingMachine.ChangeAmount();
+            Product product = vendingMachine.SelectProduct("B7");
+
+            product.Should().NotBeNull();
+            Decimal amount = vendingMachine.ChangeAmount();
+
+            Change changeCount = vendingMachine.ReplenishChange();
+
+            Decimal change = vendingMachine.DeductChange(amount);
 
         }
     }

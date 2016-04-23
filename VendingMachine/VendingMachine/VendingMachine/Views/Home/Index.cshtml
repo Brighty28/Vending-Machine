@@ -1,0 +1,32 @@
+﻿@model IEnumerable<VendingMachine.Models.ProductModel>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@*<div class="jumbotron">
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>*@
+<div class="panel panel-default">
+    <div class="panel-heading">Insert money by selecting an amount below <i class="glyphicon-info-sign"></i></div>
+    <div class="panel-body">
+        Panel content
+    </div>
+</div>
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <h2>@item.ProductName</h2>
+            <p>
+                @item.Price.ToString("C")
+            </p>
+            <p><a class="btn btn-default" href="">Learn more</a></p>
+
+        </div>
+    }
+
+</div>

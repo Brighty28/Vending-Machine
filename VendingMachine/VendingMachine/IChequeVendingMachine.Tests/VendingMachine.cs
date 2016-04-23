@@ -28,47 +28,66 @@ namespace IChequeVendingMachine.Tests
         {
             _selectedProduct = new Product();
 
-            var available = true;
-            while (available)
-            {
+            //var available = true;
+            //while (available)
+            //{
                 switch (productCode)
                 {
                     case "A2":
                         _selectedProduct.Price = 1.5M;
                         break;
-                    case "A3":
-                        _selectedProduct.Price = 1.72M;
-                        break;
                     case "A4":
                         _selectedProduct.Price = 1.73M;
-                        break;
-                    case "B5":
-                        _selectedProduct.Price = 0.59M;
-                        break;
-                    case "B6":
-                        _selectedProduct.Price = 1.75M;
                         break;
                     case "B7":
                         _selectedProduct.Price = 1.75M;
                         _selectedProduct.Stock = 0;
-                        available = false;
+                        //available = false;
                         _selectedProduct.ErrorMsg = "No product avaiable at" + '-' + productCode;
                         break;
+                    case "B6":
+                        _selectedProduct.Price = 1.75M;
+                        break;
                 }
-            }
+            //}
             
             return _selectedProduct;
         }
 
-        public int StockAmount()
+        internal Change ReplenishChange()
         {
-            return 1;
+            _availableChange = new Change();
+
+            return _availableChange;
+        }
+
+        public int DeductChange(decimal change)
+        {
+            //var availbaleChange = new Change();
+            //var changeDue = Convert.ToDecimal((int)_money) - (100 * _selectedProduct.Price);
+            int runningTotal = 0;
+            while (runningTotal != change)
+            {
+                if (change >= (int)Money.onePound)
+                {
+                    change = change - _availableChange.UpdateChangeCount((int)Money.onePound, 1);                
+                }
+                else if (change >= (int)Money.twentyPence)
+                {
+                    runningTotal += _availableChange.UpdateChangeCount((int) Money.twentyPence, 1);
+                }
+                else if (change >= (int)Money.fivePence)
+                {
+                    change += _availableChange.UpdateChangeCount((int) Money.fivePence, 1);
+
+                }
+            }
+
+            return runningTotal;
         }
 
         public decimal ChangeAmount()
         {
-            var availableChange = new Change();
-            
             return Convert.ToDecimal((int)_money) - (100*_selectedProduct.Price);
         }
     }
