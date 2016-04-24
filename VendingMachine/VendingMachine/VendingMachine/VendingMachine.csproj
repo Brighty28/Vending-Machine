@@ -131,6 +131,7 @@
     <Compile Include="Models\ChangeModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\SampleData.cs" />
+    <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\VendingEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -143,6 +144,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Views\Home\_purchaseResult.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

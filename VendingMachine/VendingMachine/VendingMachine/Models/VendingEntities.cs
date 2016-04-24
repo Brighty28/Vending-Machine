@@ -8,6 +8,7 @@ namespace VendingMachine.Models
     {
         public DbSet<ProductModel> Products { get; set; }
         public DbSet<ChangeModel> ChangeAmounts { get; set; }
+        public DbSet<TransactionModel> Transactions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

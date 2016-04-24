@@ -1,22 +1,41 @@
-﻿@model IEnumerable<VendingMachine.Models.ProductModel>
+﻿@using System.Web.UI.WebControls;
+@model IEnumerable<VendingMachine.Models.ProductModel>
 @{
     ViewBag.Title = "Home Page";
 }
-
-@*<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>*@
 <div class="panel panel-default">
-    <div class="panel-heading">Insert money by selecting an amount below <i class="glyphicon-info-sign"></i></div>
+    <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i> Insert money by selecting an amount below</div>
     <div class="panel-body">
-        Panel content
+        @{  var listItems = new List<ListItem>
+            {
+                  new ListItem { Text = "£2", Value="2.00M" },
+                  new ListItem { Text = "£5", Value="5.00M" },
+                  new ListItem { Text = "£1.75", Value="1.75M" },
+                  new ListItem { Text = "£1.72", Value="1.72M" },
+                  new ListItem { Text = "£0.59", Value="0.59M" }
+            };
+        }
+        
+        @Html.DropDownList("-- Indert Money --",    
+                    new SelectList(listItems, "Value", "Text"),
+                    new { @class = "form-control"})
+
     </div>
 </div>
 
 <div class="row">
-
+@using (Ajax.BeginForm("Purchase", "Home", new AjaxOptions
+{//GetPatients is name of method in PatientController
+    InsertionMode = InsertionMode.Replace, //target element(#patientList) will be replaced
+    HttpMethod = "POST",
+    //OnSuccess = "OnSuccess",
+    //OnFailure = "OnFailure"
+    UpdateTargetId = "transaction",
+    //LoadingElementId = "loader" // div with .gif loader - that is shown when data are loading
+}))
+{
+    
+}
     @foreach (var item in Model)
     {
         <div class="col-md-4">
@@ -24,9 +43,18 @@
             <p>
                 @item.Price.ToString("C")
             </p>
-            <p><a class="btn btn-default" href="">Learn more</a></p>
+            <p>
+                @Html.ActionLink(
+                        "Select",
+                        "Purchase",
+                        "Home",
+                        new { id = item.Id, money = VendingMachine.Models.Money.twoPound },
+                        new { @class = "btn btn-default" })
 
         </div>
     }
 
+    <div id="transaction">
+        @Html.Partial("_purchaseResult")
+    </div>
 </div>
