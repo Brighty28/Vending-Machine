@@ -30,32 +30,28 @@ namespace IChequeVendingMachine.Tests
             twoPenceCount = 1 * (int)Money.twoPence;
         }
 
-        public int UpdateChangeCount(int changeToUpdate, int amount)
+        public void UpdateChangeCount(int changeToUpdate, int amount)
         {
-            int bob = 0;
-            int fred = amount * 100;
 
             switch (changeToUpdate)
             {
                 case 1:
-                    bob += pennyCount = changeToUpdate - fred;
+                    pennyCount = amount --;
                 break;
                 case 2:
-                    bob += twoPenceCount = changeToUpdate - fred;
+                    twoPenceCount = amount --;
                 break;
                 case 5:
-                    bob += fivePenceCount = changeToUpdate - fred;
+                    fivePenceCount = amount --;
                 break;
                 case 20:
-                    bob += twentyPenceCount = changeToUpdate - fred;
+                    twentyPenceCount = amount --;
                 break;
                 case 100:
-                    onePoundCount = - fred;
-                    bob += changeToUpdate;
+                    onePoundCount = amount --;
                 break;
             }
 
-            return bob;
         }
     }
 }

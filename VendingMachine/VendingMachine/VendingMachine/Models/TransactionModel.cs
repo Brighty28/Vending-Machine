@@ -11,10 +11,12 @@ namespace VendingMachine.Models
         [Key]
         public int transactionId { get; set; }
 
-        public bool status { get; set; }
+        public bool success { get; set; }
 
         public DateTime transactionDate { get; set; }
 
-        public string message { get; set; }
+        public ProductModel transactionDetails { get; set; }
+
+        //public string message { get; set; }
     }
 }

@@ -129,6 +129,8 @@ namespace IChequeVendingMachine.Tests
 
             Decimal change = vendingMachine.DeductChange(amount);
 
+            change.Should().Equals(amount);
+
         }
     }
 }

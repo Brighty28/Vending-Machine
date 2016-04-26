@@ -13,11 +13,6 @@ namespace VendingMachine.Models
 
             new List<ProductModel>
             {
-                new ProductModel { 
-                    ProductName = "A1", 
-                    Stock = 10,
-                    Price = 8.99M
-                },
                 new ProductModel
                 {
                     ProductName = "A2",

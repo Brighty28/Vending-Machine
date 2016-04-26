@@ -9,8 +9,6 @@ namespace VendingMachine.Controllers
 {
     public class HomeController : Controller
     {
-        //private Money _money;
-        //private ProductModel _selectedProduct;
         private VendingEntities db = new VendingEntities();
 
         public ActionResult Index()
@@ -20,36 +18,44 @@ namespace VendingMachine.Controllers
             return View(products);
         }
 
-        public ActionResult Purchase(int id, Money money )
+        //[HttpPost]
+        public ActionResult Purchase(int id, Money money)
         {
             var transaction = new TransactionModel();
-            var Message = string.Empty;
+
             var product = db.Products.Single(p => p.Id == id);
 
-            if(product.Stock > 0)
+            transaction.transactionDate = DateTime.Now;
+            transaction.success = false;
+            transaction.transactionDetails = product;
+
+            if(product.Stock > 0) 
             {
+                transaction.success = true;
+
                 if((decimal)money == product.Price)
                 {
-                    product.Stock = -1;
-
-                    transaction.transactionDate = DateTime.Now;
-                    transaction.status = true;
+                    product.Stock -- ;
                     db.SaveChanges();
+
+                    TempData["message"] = "Please take your product" + '-' + product.ProductName;
                 }
-                else
+                else 
                 {
                     var amount = ChangeAmount((Money)money, product.Price);
 
-                    product.Stock = - 1;
+                    product.Stock -- ;
                     db.SaveChanges();
 
-                    Message = "Please take your product and change" + '-' + amount;
+                    TempData["message"] = "Please take your product and change" + '-' + amount;
                 }
-
-                Message = "Please take your product" + '-' + product.ProductName;
+            }
+            else
+            {
+                TempData["message"] = "Product" + '-' + product.ProductName + '-' + "is currently out of stock";
             }
             
-            return PartialView("_purchaseResult", Message = "Product" +'-'+ product.ProductName +'-'+ "is currently out of stock");
+            return RedirectToAction("Index");
 
         }
 
@@ -58,11 +64,5 @@ namespace VendingMachine.Controllers
             return Convert.ToDecimal((int)money) - (100 * selectedProductPrice);
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
     }
 }

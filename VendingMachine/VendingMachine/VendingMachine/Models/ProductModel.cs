@@ -17,7 +17,7 @@ namespace VendingMachine.Models
 
         public Money MoneyValue { get; set; }
 
-        public TransactionModel transaction { get; set; }
+        //public TransactionModel transaction { get; set; }
     }
 
     public enum Money

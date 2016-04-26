@@ -1,0 +1,39 @@
+﻿@model IEnumerable<VendingMachine.Models.TransactionModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Engineer Report</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Reference</th>
+            <th>Date</th>
+            <th>Successful</th>
+            <th>Product</th>
+            <th>Stock count</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var item in Model)
+            {
+                <td>
+                    @item.transactionId
+                </td>
+                <td>@item.transactionDate</td>
+                <td>
+                    @item.success
+                </td>
+                <td>
+                    @item.transactionDetails.ProductName + '-' + @item.transactionDetails.Price.ToString("C")
+                </td>
+                <td>
+                    @item.transactionDetails.Stock
+                </td>
+            }
+        </tr>
+
+    </tbody>
+</table>
