@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace IChequeVendingMachine.Tests
@@ -36,13 +37,19 @@ namespace IChequeVendingMachine.Tests
                     case "A2":
                         _selectedProduct.Price = 1.5M;
                         break;
+                    case "A3":
+                        _selectedProduct.Price = 1.72M;
+                        break;
                     case "A4":
                         _selectedProduct.Price = 1.73M;
+                        break;
+                    case "A5":
+                        _selectedProduct.Price = 0.59M;
                         break;
                     case "B7":
                         _selectedProduct.Price = 1.75M;
                         _selectedProduct.Stock = 0;
-                        //available = false;
+                        
                         _selectedProduct.ErrorMsg = "No product avaiable at" + '-' + productCode;
                         break;
                     case "B6":
@@ -61,34 +68,73 @@ namespace IChequeVendingMachine.Tests
             return _availableChange;
         }
 
-        public int DeductChange(decimal change)
+        public void DeductChange(decimal change)
         {
-            //var availbaleChange = new Change();
-            //var changeDue = Convert.ToDecimal((int)_money) - (100 * _selectedProduct.Price);
-            int runningTotal = 0;
-            while (runningTotal != change)
+            ReplenishChange();
+
+            decimal runningTotal = 0;
+            decimal existingChange = change;
+            while(runningTotal != change)
             {
-                if (change >= (int)Money.onePound)
+                if (existingChange >= (decimal)Money.onePound)
                 {
-                    change = change - _availableChange.UpdateChangeCount((int)Money.onePound, 1);                
+                    _availableChange.UpdateChangeCount((int) Money.onePound, 1);
+                    runningTotal += (decimal)Money.onePound;
+                    existingChange = existingChange - (decimal)Money.onePound;  
                 }
-                else if (change >= (int)Money.twentyPence)
+                else if (existingChange >= (decimal)Money.twentyPence && _availableChange.twentyPenceCount > 0)
                 {
-                    runningTotal += _availableChange.UpdateChangeCount((int) Money.twentyPence, 1);
+                    _availableChange.UpdateChangeCount((int) Money.twentyPence, 2);
+                    runningTotal += (decimal)Money.twentyPence * 2;
+                    existingChange = existingChange - (decimal)Money.twentyPence * 2;
                 }
-                else if (change >= (int)Money.fivePence)
+                else if (existingChange >= (decimal)Money.fivePence)
                 {
-                    change += _availableChange.UpdateChangeCount((int) Money.fivePence, 1);
+                    _availableChange.UpdateChangeCount((int) Money.fivePence, 5);
+                    runningTotal += (decimal)Money.fivePence * 5;
+                    existingChange = existingChange - (decimal)Money.fivePence * 5;  
+                }
+                else if (existingChange >= (decimal)Money.twoPence && _availableChange.twoPenceCount > 0)
+                {
+                    _availableChange.UpdateChangeCount((int)Money.twoPence, 1);
+                    runningTotal += (decimal)Money.twoPence;
+                    existingChange = existingChange - (decimal)Money.twoPence;  
+
+                }
+                else if (existingChange >= (decimal)Money.penny)
+                {
+                    _availableChange.UpdateChangeCount((int)Money.penny, 2);
+                    runningTotal += (decimal)Money.penny * 2;
+                    existingChange = existingChange - (decimal)Money.penny * 2;  
 
                 }
             }
 
-            return runningTotal;
+            //return runningTotal;
         }
 
         public decimal ChangeAmount()
         {
             return Convert.ToDecimal((int)_money) - (100*_selectedProduct.Price);
+        }
+
+        public decimal ChangeAmount(List<Product> products)
+        {
+            decimal total = 0M;
+            var i = 0;
+            foreach (var product in products)
+            {
+                if (i == 0)
+                {
+                    total = Convert.ToDecimal((int) _money) - (100*product.Price);
+                }
+                else
+                {
+                    total = total - (100*product.Price);
+                }
+                i++;
+            }
+            return total;
         }
     }
 

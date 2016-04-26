@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -120,16 +121,21 @@ namespace IChequeVendingMachine.Tests
 
             vendingMachine.Insert((Money)insertedMoney);
 
-            Product product = vendingMachine.SelectProduct("B7");
+            Product product1 = vendingMachine.SelectProduct("A3");
+            product1.Should().NotBeNull();
 
-            product.Should().NotBeNull();
-            Decimal amount = vendingMachine.ChangeAmount();
+            Product product2 = vendingMachine.SelectProduct("A5");
+            product2.Should().NotBeNull();
 
-            Change changeCount = vendingMachine.ReplenishChange();
+            var products = new List<Product>{product1, product2};
 
-            Decimal change = vendingMachine.DeductChange(amount);
+            Decimal amount = vendingMachine.ChangeAmount(products);
 
-            change.Should().Equals(amount);
+            //Change changeCount = vendingMachine.ReplenishChange();
+
+            vendingMachine.DeductChange(amount);
+
+            amount.Should().Be(169);
 
         }
     }

@@ -19,15 +19,15 @@ namespace IChequeVendingMachine.Tests
 
         public Change()
         {
-            fivePenceCount = 10 * (int)Money.fivePence;
+            fivePenceCount = 10; //* (int)Money.fivePence;
 
-            twentyPenceCount = 2 * (int)Money.twentyPence;
+            twentyPenceCount = 2; //* (int)Money.twentyPence;
 
-            onePoundCount = 2 * (int)Money.onePound;
+            onePoundCount = 2; //* (int)Money.onePound;
 
-            pennyCount = 7 * (int)Money.penny;
+            pennyCount = 7; //* (int)Money.penny;
 
-            twoPenceCount = 1 * (int)Money.twoPence;
+            twoPenceCount = 1; //* (int)Money.twoPence;
         }
 
         public void UpdateChangeCount(int changeToUpdate, int amount)
@@ -36,19 +36,19 @@ namespace IChequeVendingMachine.Tests
             switch (changeToUpdate)
             {
                 case 1:
-                    pennyCount = amount --;
+                    pennyCount = pennyCount - amount;
                 break;
                 case 2:
-                    twoPenceCount = amount --;
+                    twoPenceCount = twoPenceCount - amount;
                 break;
                 case 5:
-                    fivePenceCount = amount --;
+                    fivePenceCount = fivePenceCount - amount;
                 break;
                 case 20:
-                    twentyPenceCount = amount --;
+                    twentyPenceCount = twentyPenceCount - amount;
                 break;
                 case 100:
-                    onePoundCount = amount --;
+                    onePoundCount = onePoundCount - amount;
                 break;
             }
 

@@ -9,6 +9,7 @@ namespace VendingMachine.Controllers
 {
     public class HomeController : Controller
     {
+        private Money _money;
         private VendingEntities db = new VendingEntities();
 
         public ActionResult Index()
@@ -18,8 +19,13 @@ namespace VendingMachine.Controllers
             return View(products);
         }
 
+        public void Insert(Money moneyValue)
+        {
+            _money = moneyValue;
+        }
+
         //[HttpPost]
-        public ActionResult Purchase(int id, Money money)
+        public ActionResult Purchase(int id)//, Money money)
         {
             var transaction = new TransactionModel();
 
@@ -33,7 +39,7 @@ namespace VendingMachine.Controllers
             {
                 transaction.success = true;
 
-                if((decimal)money == product.Price)
+                if((decimal)_money == product.Price)
                 {
                     product.Stock -- ;
                     db.SaveChanges();
@@ -42,7 +48,7 @@ namespace VendingMachine.Controllers
                 }
                 else 
                 {
-                    var amount = ChangeAmount((Money)money, product.Price);
+                    var amount = ChangeAmount((Money)_money, product.Price);
 
                     product.Stock -- ;
                     db.SaveChanges();

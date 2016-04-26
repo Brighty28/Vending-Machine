@@ -14,10 +14,12 @@
             };
 
         }
-
-        @Html.DropDownList("-- Insert Money --",
-                    new SelectList(listItems, "Value", "Text"),
-                    new { @id = "moneyList", @class = "form-control" })
         
+        @Html.BeginForm("Insert", "Home", FormMethod.Post, null)
+        {
+            @Html.DropDownList("-- Insert Money --",
+                    new SelectList(listItems, "Value", "Text"),
+                    new { @id = "moneyList", @class = "form-control", onchange = "this.form.submit()" })
+        }
     </div>
 </div>
