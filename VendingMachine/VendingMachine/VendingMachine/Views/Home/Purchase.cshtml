@@ -1,0 +1,22 @@
+﻿@model IEnumerable<VendingMachine.Models.ProductModel>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <input id="productId" type="hidden" value="@item.Id" />
+
+            <h2>@item.ProductName</h2>
+            <p>
+                @item.Price.ToString("C")
+            </p>
+            <p>
+                @Html.ActionLink("Select Product", "PurchaseDetails", new { id = item.Id })
+            </p>
+        </div>
+    }
+</div>

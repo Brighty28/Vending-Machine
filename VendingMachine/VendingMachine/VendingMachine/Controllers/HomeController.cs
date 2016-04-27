@@ -9,23 +9,32 @@ namespace VendingMachine.Controllers
 {
     public class HomeController : Controller
     {
-        private Money _money;
+        private static Money _money;
         private VendingEntities db = new VendingEntities();
 
         public ActionResult Index()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(ProductModel productModel)
+        {
+            _money = productModel.MoneyValue;
+            TempData["insertedMoney"] = "You have inserted £" + Convert.ToDecimal((int)_money);
+            return View();
+        }
+
+        public ActionResult Purchase()
         {
             var products = db.Products.ToList();
 
             return View(products);
         }
 
-        public void Insert(Money moneyValue)
-        {
-            _money = moneyValue;
-        }
-
         //[HttpPost]
-        public ActionResult Purchase(int id)//, Money money)
+        public ActionResult PurchaseDetails(int id)//, Money money)
         {
             var transaction = new TransactionModel();
 
@@ -33,7 +42,9 @@ namespace VendingMachine.Controllers
 
             transaction.transactionDate = DateTime.Now;
             transaction.success = false;
-            transaction.transactionDetails = product;
+            transaction.ProductName = product.ProductName;
+            transaction.Price = product.Price;
+            transaction.Stock = product.Stock;
 
             if(product.Stock > 0) 
             {
@@ -44,24 +55,30 @@ namespace VendingMachine.Controllers
                     product.Stock -- ;
                     db.SaveChanges();
 
-                    TempData["message"] = "Please take your product" + '-' + product.ProductName;
+                    TempData["success"] = "Please take your product" + '-' + product.ProductName;
                 }
                 else 
                 {
-                    var amount = ChangeAmount((Money)_money, product.Price);
+                    var amount = ChangeAmount(_money, product.Price);
 
                     product.Stock -- ;
                     db.SaveChanges();
 
-                    TempData["message"] = "Please take your product and change" + '-' + amount;
+                    TempData["change"] = "Please take your product and change" + '-' + amount;
                 }
             }
             else
             {
-                TempData["message"] = "Product" + '-' + product.ProductName + '-' + "is currently out of stock";
+                TempData["failure"] = "Product" + '-' + product.ProductName + '-' + "is currently out of stock";
             }
-            
-            return RedirectToAction("Index");
+
+            //Add Transaction object into Transactions DBset
+            db.Transactions.Add(transaction);
+
+            // call SaveChanges method to save student into database
+            db.SaveChanges();
+
+            return View();
 
         }
 

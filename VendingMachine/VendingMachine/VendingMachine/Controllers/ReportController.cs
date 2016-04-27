@@ -12,7 +12,7 @@ namespace VendingMachine.Controllers
         VendingEntities db = new VendingEntities();
 
         // GET: Report
-        public ActionResult Index()
+        public ActionResult Stock_Report()
         {
             var transactions = db.Transactions.ToList();
 

@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "PurchaseDetails";
+}
+
+<h2>Purchase Transaction Details</h2>
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success" role="alert">@TempData["success"]</div>
+    
+}
+@if (TempData["change"] != null)
+{
+    <div class="alert alert-info" role="alert">@TempData["change"]</div>
+}
+
+@if (TempData["faliure"] != null)
+{
+    <div class="alert alert-danger" role="alert">@TempData["failure"]</div>
+}

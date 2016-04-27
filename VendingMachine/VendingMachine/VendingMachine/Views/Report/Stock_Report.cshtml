@@ -11,7 +11,7 @@
             <th>Reference</th>
             <th>Date</th>
             <th>Successful</th>
-            <th>Product</th>
+            <th>Product Details</th>
             <th>Stock count</th>
         </tr>
     </thead>
@@ -27,10 +27,10 @@
                     @item.success
                 </td>
                 <td>
-                    @item.transactionDetails.ProductName + '-' + @item.transactionDetails.Price.ToString("C")
+                    Name: @item.ProductName  - Price: @item.Price.ToString("C")
                 </td>
                 <td>
-                    @item.transactionDetails.Stock
+                    @item.Stock
                 </td>
             }
         </tr>

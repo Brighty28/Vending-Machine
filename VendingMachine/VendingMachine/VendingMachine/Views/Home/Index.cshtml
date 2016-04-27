@@ -1,54 +1,31 @@
 ﻿@using System.Web.UI.WebControls;
-@model IEnumerable<VendingMachine.Models.ProductModel>
-@{
-    ViewBag.Title = "Home Page";
-}
+@using VendingMachine.Models
+@model VendingMachine.Models.ProductModel
 
 <div class="row">
-    @Html.Partial("_insertMoney")
-</div>
-<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading"><i class="glyphicon glyphicon-info-sign"></i>  Insert money by selecting an amount below</div>
+        <div class="panel-body">
+            @using (Html.BeginForm("Index", "Home", FormMethod.Post, null))
+            {
+                @Html.DropDownList("MoneyValue",
+                   EnumHelper.GetSelectList(typeof(Money)),
+                   "Select Money",
+                   new { @id = "moneyList", @class = "form-control", onchange = "this.form.submit()" })
 
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4">
-            <input id="productId" type="hidden" value="@item.Id" />
-
-            <h2>@item.ProductName</h2>
-            <p>
-                @item.Price.ToString("C")
-            </p>
-            <p>
-                @Html.ActionLink(
-                    "Select",
-                    "Purchase",
-                    "Home",
-                    new { id = item.Id, money = ViewBag.Money },
-                    new { @class = "btn btn-default" })
-
+                if (TempData["insertedMoney"] != null)
+                {
+                    <p>
+                         @Html.ActionLink("Select Product", "Purchase", "Home", new { area = "" }, new { @class = "btn btn-default"  })
+                    </p>
+                }
+            }
         </div>
-    }
+    </div>
 </div>
-
-@if (TempData["message"] != null)
+@if (TempData["insertedMoney"] != null)
 {
-    <div class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">Transaction Message</h4>
-                </div>
-                <div class="modal-body">
-                    <p>@TempData["message"]</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
+    <div class="alert alert-info" role="alert">
+        @TempData["insertedMoney"]
+    </div>
 }

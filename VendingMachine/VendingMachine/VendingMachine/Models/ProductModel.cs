@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -17,18 +19,20 @@ namespace VendingMachine.Models
 
         public Money MoneyValue { get; set; }
 
-        //public TransactionModel transaction { get; set; }
+        //public TransactionModel Transaction { get; set; }
     }
 
     public enum Money
     {
-        penny = 1,
-        twoPence = 2,
-        fivePence = 5,
-        tenPence = 10,
-        twentyPence = 20,
-        fiftyPence = 50,
-        onePound = 100,
-        twoPound = 200
+        [Display(Name = "£2")]
+        twoPound = 200,
+        [Display(Name = "£5")]
+        fivepound =500,
+        [Display(Name = "£1.75")]
+        oneSeventyFive = 175,
+        [Display(Name = "£1.72")]
+        oneSeventyTwo = 172,
+        [Display(Name = "£0.59")]
+        fiftyNine = 059 
     }
 }
