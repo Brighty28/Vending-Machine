@@ -1,0 +1,8 @@
+/VendingMachine.Tests/obj
+/VendingMachine.Tests/bin
+/packages
+/*.suo
+/*.user
+/*.ncrunchsolution
+/_NCrunch_VendingMachine
+/VendingMachine.Tests/*.ncrunchproject
