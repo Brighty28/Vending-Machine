@@ -3,16 +3,17 @@ using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using Xunit;
 
 namespace VendingMachine.Tests
 {
-    [TestFixture]
+    //[TestFixture]
     public class TheVendingMachine
     {
-        private VendingMachine machine;
+        private readonly VendingMachine machine;
 
-        [SetUp]
-        public void SetUp()
+        //[SetUp]
+        public TheVendingMachine()
         {
             var reportManager = new ReportManager();
             var cashManager = new CashManager(reportManager);
@@ -21,13 +22,13 @@ namespace VendingMachine.Tests
             machine = new VendingMachine(cashManager, productManager);
         }
 
-        [Test]
+        [Fact]
         public void Can_accept_money()
         {
             machine.Insert(Coin.TwoPound, Coin.OnePound);
         }
 
-        [Test]
+        [Fact]
         public void Returns_coins_when_reject_is_pressed()
         {
             machine.SetChange(Coin.FiftyPence, Coin.TwentyPence);
@@ -44,7 +45,7 @@ namespace VendingMachine.Tests
             returnedCoins.Should().BeEquivalentTo(insertedCoins);
         }
 
-        [Test]
+        [Fact]
         public void Dispenses_product_and_no_change_when_product_is_selected()
         {
             const string location = "D3";
@@ -65,7 +66,7 @@ namespace VendingMachine.Tests
             change.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Dispenses_product_and_correct_change()
         {
             const string location = "A3";
@@ -86,7 +87,7 @@ namespace VendingMachine.Tests
             change.Should().BeEquivalentTo(new[] { Coin.FiftyPence });
         }
 
-        [Test]
+        [Fact]
         public void Dispenses_product_and_correct_change_from_a_fiver()
         {
             const string location = "C5";
@@ -109,7 +110,7 @@ namespace VendingMachine.Tests
             change.Should().BeEquivalentTo(new[] { Coin.TwoPound, Coin.OnePound, Coin.TwentyPence, Coin.FivePence, Coin.TwoPence });
         }
 
-        [Test]
+        [Fact]
         public void Cant_dispense_absent_product_but_can_dispense_alternate_product()
         {
             const string emptyLocation = "B7";
@@ -137,7 +138,7 @@ namespace VendingMachine.Tests
             alternateProduct.Price.Should().Be(1.75M);
         }
 
-        [Test]
+        [Fact]
         public void Dispenses_two_products_and_correct_change_from_limited_cash_float()
         {
             const string stockedLocation1 = "C1";
@@ -185,7 +186,7 @@ namespace VendingMachine.Tests
                 });
         }
 
-        [Test]
+        [Fact]
         public void Dispenses_last_product_displays_message_and_returns_change_when_second_product_is_requested()
         {
             const string location = "F4";
@@ -216,7 +217,7 @@ namespace VendingMachine.Tests
             change.Should().BeEquivalentTo(new[] { Coin.OnePound });
         }
 
-        [Test]
+        [Fact]
         public void Provides_Show_Stock_Used_report()
         {
             const string location1 = "A4";
@@ -254,7 +255,7 @@ namespace VendingMachine.Tests
             stockReport.QuantityDispensedFrom(location2).Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void Provides_Show_Money_Taken_report()
         {
             const string location1 = "E4";
@@ -314,7 +315,7 @@ namespace VendingMachine.Tests
             moneyReport.NumberOf(Coin.FivePence).Should().Be(5);
         }
 
-        [Test]
+        [Fact]
         public void Dials_back_to_head_office_when_stock_of_a_product_is_reduced_to_2()
         {
             var headOfficeConnection = Substitute.For<IExternalConnection>();
